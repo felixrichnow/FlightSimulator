@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -6,7 +7,8 @@ import java.util.Stack;
 
 
 public class FlightSimulator {
-    Stack<Airplane> AirPlaneStack;
+    ArrayList<Airplane> AirPlaneArrayList;
+
 
     void updateFlightHappening(){
         // Here the simulator will go through the stack and update each individual plane

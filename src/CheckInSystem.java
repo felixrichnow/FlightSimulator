@@ -1,5 +1,9 @@
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.Stack;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+
 
 /**
  * Created by Felix on 2017-03-27.
@@ -7,48 +11,38 @@ import java.util.Stack;
  * the AirPlanes it sorts and puts the passengers into the planes
  */
 public class CheckInSystem {
-    Stack<Order> OrderStack;
-    Stack<Airplane> StockholmAirPlaneStack;
-    Stack<Airplane> LondonAirPlaneStack;
-    Stack<Airplane> ParisAirPlaneStack;
-    Stack<Airplane> BerlinAirPlaneStack;
-    Stack<Airplane> RomeAirPlaneStack;
+    ArrayList<Order> PassengerstoBeMovedList = new ArrayList<Order>();
+    Order testOrder;
+    treeMapNodeOrderHolder storageNode = null;
+    sortedComparator sortComp = new sortedComparator();
+    ArrayList<treeMapNodeOrderHolder> sortedOrders = new ArrayList<treeMapNodeOrderHolder>();
+    TreeMap<treeMapNodeOrderHolder, treeMapNodeOrderHolder> myMap = new TreeMap<>();
 
-    public void sortTheOrdersInTheSystem(){
-        while(!OrderStack.empty()){
-           Order toBeSorted = OrderStack.pop();
-            if(toBeSorted.getDeparture().equalsIgnoreCase("Stockholm")){
-                //TODO fix this
-            }
-        }
-        //TODO here we will move the orders from OrderStack to right AirplaneStack
+    public CheckInSystem(){
+
     }
 
-    public void inputOrder(Order currentOrder){
-         OrderStack.add(currentOrder);
+    public void sortByTheMostPrioritizedRoute(){
+       sortedOrders = myMap.keySet().stream().sorted(new sortedComparator()).collect(Collectors.toCollection(ArrayList::new));
+        System.out.println("First sorted element : " +sortedOrders.get(0).getKeyString() +" "  +sortedOrders.get(0).getNumberOfPassengers());
+        //TODO go through the whole HashTable and check what passengers should be moved
+        // TODO also maybe prioritize what plane should go first
     }
 
-    public void addCityToHashMapsArray(Order testOrder,Map testMap){
-        Stack<Order> orderStack;
-        String testDeparture=testOrder.getDeparture();
-        String testDestination=testOrder.getDeparture();
-        int testTicketClass=testOrder.getTicketClass();
-        String keyString = testDeparture+testDestination+testTicketClass;
 
-        System.out.println(" ADDING ");
-        if(testMap.get(keyString)==null){
-            System.out.println(" NO-STACK FOUND AT THIS PLACE  ");
-            orderStack = new Stack();
-            orderStack.push(testOrder);
-            testMap.put(keyString,orderStack);
-        }
-        else{
-            System.out.println(" DID FIND A STACK SO ADDED IT TO EXISITING STACK ");
-            orderStack = (Stack<Order>)testMap.get(keyString);
-            orderStack.push(testOrder);
+    public void addOrderToTheCheckInSystem(Order testOrder){
+        System.out.println("New node created  Dep : " + testOrder.getDeparture() + " Des: "
+                + testOrder.getDestination() + " NumbPas : " + testOrder.getPassengers());
+        treeMapNodeOrderHolder testKeyNode = new treeMapNodeOrderHolder(testOrder);
+        if (myMap.get(testKeyNode) != null) {
+            treeMapNodeOrderHolder currentNode = myMap.get(testKeyNode);
+            currentNode.addOrderToOrderArrayList(testOrder);
+            myMap.put(currentNode, currentNode);
+        } else {
+            treeMapNodeOrderHolder currentNode = new treeMapNodeOrderHolder(testOrder);
+            myMap.put(currentNode, currentNode);
         }
     }
-
 
 
 }
