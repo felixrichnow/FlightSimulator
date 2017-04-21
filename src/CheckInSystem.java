@@ -22,17 +22,17 @@ public class CheckInSystem {
 
     }
 
-    public void sortByTheMostPrioritizedRoute(){
+    public ArrayList<treeMapNodeOrderHolder> sortByTheMostPrioritizedRoute(){
        sortedOrders = myMap.keySet().stream().sorted(new sortedComparator()).collect(Collectors.toCollection(ArrayList::new));
-        System.out.println("First sorted element : " +sortedOrders.get(0).getKeyString() +" "  +sortedOrders.get(0).getNumberOfPassengers());
+       sortedOrders.stream().forEach(e -> System.out.println("SortedNode : " +e.getKeyString() +" " +e.getNumberOfPassengers()));
+       System.out.println("First sorted element : " +sortedOrders.get(0).getKeyString() +" "  +sortedOrders.get(0).getNumberOfPassengers());
+        return sortedOrders;
         //TODO go through the whole HashTable and check what passengers should be moved
         // TODO also maybe prioritize what plane should go first
     }
 
 
     public void addOrderToTheCheckInSystem(Order testOrder){
-        System.out.println("New node created  Dep : " + testOrder.getDeparture() + " Des: "
-                + testOrder.getDestination() + " NumbPas : " + testOrder.getPassengers());
         treeMapNodeOrderHolder testKeyNode = new treeMapNodeOrderHolder(testOrder);
         if (myMap.get(testKeyNode) != null) {
             treeMapNodeOrderHolder currentNode = myMap.get(testKeyNode);
@@ -43,6 +43,5 @@ public class CheckInSystem {
             myMap.put(currentNode, currentNode);
         }
     }
-
 
 }

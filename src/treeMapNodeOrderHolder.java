@@ -8,14 +8,22 @@ import java.util.ArrayList;
 public class treeMapNodeOrderHolder implements Comparable<treeMapNodeOrderHolder> {
 
     String keyString;
+    String currentDepature;
+    String currentDestination;
     int numberOfPassengers;
    ArrayList<Order> orderHolderArrayList;
 
     public treeMapNodeOrderHolder(Order newOrder) {
         this.keyString = newOrder.getDeparture()+newOrder.getDestination();
+        this.currentDepature = newOrder.getDeparture();
+        this.currentDestination = newOrder.getDestination();
         this.numberOfPassengers = newOrder.getPassengers();
       orderHolderArrayList = new ArrayList<Order>();
+      orderHolderArrayList.add(newOrder);
+        currentDepature = null;
+        currentDestination = null;
     }
+
 
     @Override
     public int compareTo(treeMapNodeOrderHolder that) {
@@ -33,7 +41,10 @@ public class treeMapNodeOrderHolder implements Comparable<treeMapNodeOrderHolder
   }
 
     public void addOrderToOrderArrayList(Order ordertoAdd){
+        this.keyString = ordertoAdd.getDeparture()+ordertoAdd.getDestination();
         numberOfPassengers+= ordertoAdd.getPassengers();
+        this.currentDepature = ordertoAdd.getDeparture();
+        this.currentDestination = ordertoAdd.getDestination();
         orderHolderArrayList.add(ordertoAdd);
     }
 
@@ -55,6 +66,12 @@ public class treeMapNodeOrderHolder implements Comparable<treeMapNodeOrderHolder
         return keyString;
     }
 
+    public String getDeparture(){
+        return currentDepature;
+    }
 
+    public String getCurrentDestination(){
+        return currentDestination;
+    }
 
 }
