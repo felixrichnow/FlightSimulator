@@ -12,91 +12,114 @@ import java.util.stream.Collectors;
 /**
  * Created by user on 2017-03-27.
  */
-public class Airplane implements Runnable {
+public class Airplane extends Thread {
     double currentDistanceToDestination =0; // Starts at a destination
     double speedOfthePlanePerMinute;
     int actualAmountOfPassengers;
     int amountOfPossiblePassengers=150;
     boolean airPlaneIsMoving = false;
-    String Departure; // Currentlocation
-    String Destination;
-    boolean timerCorrect;
     ArrayList<Order> Passengers = new ArrayList<Order>();
     ArrayList<treeMapNodeOrderHolder> possibletreeNodes = new ArrayList<treeMapNodeOrderHolder>();
     boolean running = true;
     treeMapNodeOrderHolder firstNode = null;
     String currentLocation;
+    String currentDestination;
+    String currentDestionation;
     CheckInSystem currentSystem;
     GoogleObject googleObj;
     boolean existsLocation = false;
     treeMapNodeOrderHolder currentNode = null;
+    String currentDep;
 
     public Airplane(CheckInSystem currentSystem) {
         this.currentDistanceToDestination =0;
         //I think this is in kilo meters
-        this.speedOfthePlanePerMinute=14.75;
-        timerCorrect = true;
+        this.speedOfthePlanePerMinute=15;
         airPlaneIsMoving = false;
         this.currentSystem=currentSystem;
-        GoogleObject googleObj = new GoogleObject();
+        currentLocation=null;
+        currentDestination=null;
     }
 
     public void setCurrentDistanceToDestination(double distanceToBeChanged ){
         currentDistanceToDestination = distanceToBeChanged;
     }
 
-    public double getCurrentDistanceToDestination(){
-        return currentDistanceToDestination;
-    }
 
-    public boolean isAirPlaneIsMovingTrue (){
-        return airPlaneIsMoving;
-     }
-
-    public void reachedDestionNation(){
-        Passengers.clear();
-    }
-
-    public void figureOutWhereToGo(){
-
-    }
     /*
     /* This method will be used to add passengers into the airplane
      */
 
     public void addPassengers(Order newPassengers){
-        if(Destination.equalsIgnoreCase(newPassengers.getDestination())){
-            Passengers.add(newPassengers);
-        }
-        else{
-            System.out.println("Tried adding passengers with wrong destination " +
-                    "to a plane with different destination");
-
-        }
+        actualAmountOfPassengers+=newPassengers.getPassengers();
+        Passengers.add(newPassengers);
     }
 
 
     @Override
     public void run() {
-        int distanceToDestination=0;
-        possibletreeNodes = currentSystem.sortByTheMostPrioritizedRoute();
-        //users.stream().filter(u -> u.age > 30).collect(Collectors.toList());
-        if(possibletreeNodes!= null);
-        if(possibletreeNodes.stream().filter(t -> t.getKeyString()
-                .startsWith(currentLocation)).findFirst().get() != null ){
-            treeMapNodeOrderHolder currentNode = possibletreeNodes.stream().filter(t -> t.getKeyString()
-                    .startsWith(currentLocation)).findFirst().get();
-            System.out.println("FOUND A NODE TO START : " +currentNode.getKeyString());
+    GoogleObject googleObj = new GoogleObject();
+    boolean notMoving = true;
+    boolean keepRunning = true;
 
-            for(int j=0; j<currentNode.getOrderArrayList().size();j++){
-                System.out.println( j +" element in OrderList : " +currentNode.getOrderArrayList().get(j).getPassengers());
+        //This should only be called when it needs a new destination
+        while( keepRunning== true ){
+
+            if( currentDistanceToDestination <= 0 ){
+                notMoving = true;
             }
 
-        }
-        if(currentNode!= null)
-        //Thread.sleep()
+            while(notMoving == true){
+                possibletreeNodes = currentSystem.sortByTheMostPrioritizedRoute();
+                /*if(currentDestination != null){
 
-        System.out.println(currentNode.getKeyString());
+                }*/
+                treeMapNodeOrderHolder currentNode = possibletreeNodes.stream().filter(t -> t.getKeyString()
+                        .startsWith(currentLocation)).findFirst().get();
+                if(currentNode.getNumberOfPassengers() != 0 ) {
+                    notMoving = false;
+                    System.out.println("CURRENTNODE : " + currentNode.getDeparture());
+                    System.out.println("CURRENTNDES : " + currentNode.getCurrentDestination());
+                    System.out.println("DISTANCE : " + googleObj.gDistance(currentNode.getDeparture(),currentNode.getCurrentDestination()));
+                    currentDistanceToDestination = googleObj.gDistance(currentNode.getDeparture(),currentNode.getCurrentDestination());
+                    currentDep = currentNode.getDeparture();
+                    currentLocation = currentNode.currentDestination;
+
+
+                    for (int j = 0; j < currentNode.getOrderArrayList().size(); j++) {
+                        //System.out.println(+j + " element in OrderList : " + currentNode.getOrderArrayList().get(j).getPassengers());
+                        if (actualAmountOfPassengers + currentNode.getOrderArrayList().get(j).getPassengers() <= amountOfPossiblePassengers)
+                            //Adding passengers to the plane but removing them from the System
+                            this.amountOfPossiblePassengers -= currentNode.getOrderArrayList().get(j).getPassengers();
+                            this.addPassengers(currentNode.getOrderArrayList().get(j));
+                            currentSystem.removeOrderFromTheCheckInSystem(currentNode.getOrderArrayList().get(j));
+                    }
+                }
+                else{
+                    try {
+                        currentSystem.printSortedOrders();
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+                System.out.println("MOVING 70 KM");
+            System.out.println("Current Dist: "+currentDistanceToDestination);
+            System.out.println("PlaneDepLoc: "+currentLocation +" PlaneDepDes" +currentDep);
+            currentDistanceToDestination=currentDistanceToDestination-speedOfthePlanePerMinute;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+        //if(currentNode!= null)
+
+        //System.out.println(currentNode.getKeyString());
+    }
+
 
 
             //{
@@ -139,9 +162,4 @@ public class Airplane implements Runnable {
             }*/
 
 
-    }
 
-
-
-
-}

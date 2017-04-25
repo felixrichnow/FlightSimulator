@@ -13,15 +13,19 @@ public class treeMapNodeOrderHolder implements Comparable<treeMapNodeOrderHolder
     int numberOfPassengers;
    ArrayList<Order> orderHolderArrayList;
 
-    public treeMapNodeOrderHolder(Order newOrder) {
-        this.keyString = newOrder.getDeparture()+newOrder.getDestination();
-        this.currentDepature = newOrder.getDeparture();
-        this.currentDestination = newOrder.getDestination();
-        this.numberOfPassengers = newOrder.getPassengers();
+    public treeMapNodeOrderHolder(Order testOrder) {
+        this.keyString = testOrder.getDeparture()+testOrder.getDeparture();
+        this.currentDepature = testOrder.getDeparture();
+        this.currentDestination = testOrder.getDestination();
+        orderHolderArrayList = new ArrayList<Order>();
+    }
+
+
+    public treeMapNodeOrderHolder(String departure,String destination) {
+        this.keyString = departure+destination;
+        this.currentDepature = departure;
+        this.currentDestination = destination;
       orderHolderArrayList = new ArrayList<Order>();
-      orderHolderArrayList.add(newOrder);
-        currentDepature = null;
-        currentDestination = null;
     }
 
 
@@ -41,13 +45,13 @@ public class treeMapNodeOrderHolder implements Comparable<treeMapNodeOrderHolder
   }
 
     public void addOrderToOrderArrayList(Order ordertoAdd){
-        this.keyString = ordertoAdd.getDeparture()+ordertoAdd.getDestination();
         numberOfPassengers+= ordertoAdd.getPassengers();
-        this.currentDepature = ordertoAdd.getDeparture();
-        this.currentDestination = ordertoAdd.getDestination();
         orderHolderArrayList.add(ordertoAdd);
     }
 
+    public void removeOrderFromOrderArrayList(Order ordertoRemove){
+        orderHolderArrayList.remove(ordertoRemove);
+    }
 
     public String getKeyString(){
         return keyString;
@@ -59,6 +63,10 @@ public class treeMapNodeOrderHolder implements Comparable<treeMapNodeOrderHolder
 
     public void addNumberOfPassengers(int number){
         numberOfPassengers+=number;
+    }
+
+    public void removeNumberOfPassengers(int number){
+        numberOfPassengers-=number;
     }
 
     @Override

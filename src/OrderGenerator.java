@@ -3,17 +3,17 @@ import java.util.Random;
 /**
  * Created by Felix Richnau on 2017-03-27.
  */
-public class OrderGenerator {
+public class OrderGenerator extends Thread {
     String One = "Stockholm";
     String Two = "London";
     String Three = "Paris";
     String Four = "Berlin";
     String Five = "Rome";
+    CheckInSystem orderSystem;
 
-    void orderGeneratorRunning(){
-        Order currentOrder = this.createANewOrder();
+    public OrderGenerator (CheckInSystem orderSystem){
+    this.orderSystem = orderSystem;
     }
-
     // TEst
     Order createANewOrder(){
         Random randomGenerator = new Random();
@@ -48,6 +48,22 @@ public class OrderGenerator {
             departureString = Five; // Rome
         }
         return departureString; // translated the number into a string
+    }
+
+    @Override
+    public void run(){
+        boolean running = true;
+        while(running = true){
+            Order currentOrder = this.createANewOrder();
+            System.out.println("New order created : Dep" +currentOrder.getDeparture() +" Des: " +currentOrder.getDestination()
+                            + " Pas: " +currentOrder.getPassengers() +" TicketClass " +currentOrder.getTicketClass());
+            orderSystem.addOrderToTheCheckInSystem(currentOrder);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
