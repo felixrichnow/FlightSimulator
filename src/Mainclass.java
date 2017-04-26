@@ -20,7 +20,14 @@ public class Mainclass {
 
         Airplane testAirPlane = new Airplane(testCheckInSystem);
         testAirPlane.currentLocation = "London";
+        testAirPlane.planeCounter = 1;
         Thread thread3 = new Thread(testAirPlane);
         thread3.start();
+
+        Airplane testAirPlane2 = new Airplane(testCheckInSystem);
+        testAirPlane2.currentLocation = "London";
+        testAirPlane2.planeCounter = 2;
+        Thread thread4 = new Thread(testAirPlane2);
+        thread4.start();
     }
 }

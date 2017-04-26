@@ -34,22 +34,23 @@ public class CheckInSystem {
     }
 
     public ArrayList<treeMapNodeOrderHolder> sortByTheMostPrioritizedRoute(){
-       sortedOrders = myMap.stream().sorted(new sortedComparator()).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<treeMapNodeOrderHolder> sortedOrders;
+        sortedOrders = myMap.stream().sorted(new sortedComparator()).collect(Collectors.toCollection(ArrayList::new));
        //System.out.println("First sorted element : " +sortedOrders.get(0).getKeyString() +" "  +sortedOrders.get(0).getNumberOfPassengers());
         return sortedOrders;
     }
 
     public void printSortedOrders(){
-        sortedOrders.stream().forEach(e -> System.out.println("SortedNode : " +e.getKeyString() +" " +e.getNumberOfPassengers()));
+       this.sortedOrders.stream().forEach(e -> System.out.println("SortedNode : " +e.getKeyString() +" " +e.getNumberOfPassengers()));
     }
 
     public void addOrderToTheCheckInSystem(Order testOrder) {
         Iterator<treeMapNodeOrderHolder> testIterator = myMap.iterator();
-        System.out.println("Attempting to add " + testOrder.getDestination() + testOrder.getDeparture());
+        //System.out.println("Attempting to add " + testOrder.getDestination() + testOrder.getDeparture());
         while (testIterator.hasNext()) {
             treeMapNodeOrderHolder currentNode = testIterator.next();
             if (currentNode.getKeyString().equalsIgnoreCase(testOrder.getDeparture()+testOrder.getDestination())) {
-                System.out.println("Found! :" + testOrder.getDestination() + testOrder.getDeparture());
+                //System.out.println("Found! :" + testOrder.getDestination() + testOrder.getDeparture());
                 currentNode.addOrderToOrderArrayList(testOrder);
                 break;
             }
@@ -57,7 +58,7 @@ public class CheckInSystem {
         }
     }
 
-    public void removeOrderFromTheCheckInSystem(Order testOrder) {
+    synchronized public void removeOrderFromTheCheckInSystem(Order testOrder) {
         Iterator<treeMapNodeOrderHolder> testIterator = myMap.iterator();
         System.out.println("Attempting to remove " + testOrder.getDeparture() + testOrder.getDestination());
         while (testIterator.hasNext()) {

@@ -49,7 +49,8 @@ public class treeMapNodeOrderHolder implements Comparable<treeMapNodeOrderHolder
         orderHolderArrayList.add(ordertoAdd);
     }
 
-    public void removeOrderFromOrderArrayList(Order ordertoRemove){
+
+    synchronized public void removeOrderFromOrderArrayList(Order ordertoRemove){
         orderHolderArrayList.remove(ordertoRemove);
     }
 
@@ -65,7 +66,7 @@ public class treeMapNodeOrderHolder implements Comparable<treeMapNodeOrderHolder
         numberOfPassengers+=number;
     }
 
-    public void removeNumberOfPassengers(int number){
+    synchronized public void removeNumberOfPassengers(int number){
         numberOfPassengers-=number;
     }
 
