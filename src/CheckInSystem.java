@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
 public class CheckInSystem {
     ArrayList<Order> PassengerstoBeMovedList = new ArrayList<Order>();
     Order testOrder;
-    treeMapNodeOrderHolder storageNode = null;
     sortedComparator sortComp = new sortedComparator();
     ArrayList<treeMapNodeOrderHolder> sortedOrders = new ArrayList<treeMapNodeOrderHolder>();
     ConcurrentSkipListSet<treeMapNodeOrderHolder> myMap = new ConcurrentSkipListSet<treeMapNodeOrderHolder>(new sortedComparator());
-
 
     public CheckInSystem(){
         List<String> cities1 = new ArrayList<String>(Arrays.asList("Stockholm","London","Rome","Paris","Berlin"));
@@ -30,21 +28,21 @@ public class CheckInSystem {
                 }
             }
         }
-
     }
 
     public ArrayList<treeMapNodeOrderHolder> sortByTheMostPrioritizedRoute(){
-        ArrayList<treeMapNodeOrderHolder> sortedOrders;
-        sortedOrders = myMap.stream().sorted(new sortedComparator()).collect(Collectors.toCollection(ArrayList::new));
+        sortedOrders = myMap.stream().sorted(sortComp).collect(Collectors.toCollection(ArrayList::new));
        //System.out.println("First sorted element : " +sortedOrders.get(0).getKeyString() +" "  +sortedOrders.get(0).getNumberOfPassengers());
         return sortedOrders;
     }
 
-    public void printSortedOrders(){
-       this.sortedOrders.stream().forEach(e -> System.out.println("SortedNode : " +e.getKeyString() +" " +e.getNumberOfPassengers()));
+    public void printSortedOrders(String color){
+        sortedOrders = this.sortByTheMostPrioritizedRoute();
+       sortedOrders.stream().forEach(e -> System.out.println(color +"SortedNode : " +e.getKeyString() +" " +e.getNumberOfPassengers()));
+        System.out.println("\u001B[0m");
     }
 
-    public void addOrderToTheCheckInSystem(Order testOrder) {
+    public synchronized void addOrderToTheCheckInSystem(Order testOrder) {
         Iterator<treeMapNodeOrderHolder> testIterator = myMap.iterator();
         //System.out.println("Attempting to add " + testOrder.getDestination() + testOrder.getDeparture());
         while (testIterator.hasNext()) {
@@ -64,8 +62,7 @@ public class CheckInSystem {
         while (testIterator.hasNext()) {
             treeMapNodeOrderHolder currentNode = testIterator.next();
             if (currentNode.getKeyString().equalsIgnoreCase(testOrder.getDeparture() + testOrder.getDestination())) {
-                System.out.println("Found! :" + testOrder.getDestination() + testOrder.getDeparture());
-                currentNode.removeNumberOfPassengers(testOrder.getPassengers());
+                System.out.println("Found! :" + testOrder.getDeparture() + testOrder.getDestination());
                 currentNode.removeOrderFromOrderArrayList(testOrder);
                 break;
             }

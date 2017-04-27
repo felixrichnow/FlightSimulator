@@ -14,7 +14,8 @@ public class OrderGenerator extends Thread {
     public OrderGenerator (CheckInSystem orderSystem){
     this.orderSystem = orderSystem;
     }
-    // TEst
+    public OrderGenerator(){    }
+    // Test
     Order createANewOrder(){
         Random randomGenerator = new Random();
         int randomPassenger = randomGenerator.nextInt(5) + 1;
@@ -27,11 +28,10 @@ public class OrderGenerator extends Thread {
         String randomDestination = figureOutDepartureAndDestination(randomDestinationNumber);
         int randomTicketClass = randomGenerator.nextInt(3) + 1;
         return new Order(randomPassenger,randomDeparture,randomDestination,randomTicketClass);
-
     }
-    String figureOutDepartureAndDestination(int numberToBeTranslated){
-        String departureString = new String();
 
+    public String figureOutDepartureAndDestination(int numberToBeTranslated){
+        String departureString = new String();
         if(numberToBeTranslated == 1){
             departureString = One; // Stockholm
         }
@@ -55,7 +55,7 @@ public class OrderGenerator extends Thread {
         boolean running = true;
         while(running = true){
             Order currentOrder = this.createANewOrder();
-            System.out.println("New order created : Dep" +currentOrder.getDeparture() +" Des: " +currentOrder.getDestination()
+            System.out.println("New order : Dep" +currentOrder.getDeparture() +" Des: " +currentOrder.getDestination()
                             + " Pas: " +currentOrder.getPassengers() +" TicketClass " +currentOrder.getTicketClass());
             orderSystem.addOrderToTheCheckInSystem(currentOrder);
             try {
@@ -65,5 +65,4 @@ public class OrderGenerator extends Thread {
             }
         }
     }
-
 }
