@@ -70,6 +70,7 @@ public class listNodeOrderHolder
      */
     void removeOrderFromOrderArrayList(Order ordertoRemove) {
         numberOfPassengers -= ordertoRemove.getPassengers();
+        System.out.println("REMOVING " +ordertoRemove.getDeparture()+ordertoRemove.getDestination() +" " +ordertoRemove.getPassengers());
         orderHolderArrayList.remove(ordertoRemove);
     }
 

@@ -82,19 +82,20 @@ public class CheckInSystem {
      *
      * @param testOrder Order that's added to the system
      */
+    private synchronized void addOrderToTheCheckInSystem(Order testOrder) {
+            Iterator<listNodeOrderHolder> testIterator = myMap.iterator();
+            //System.out.println("Attempting to add " + testOrder.getDestination() + testOrder.getDeparture());
+            while (testIterator.hasNext()) {
+                listNodeOrderHolder currentNode = testIterator.next();
+                if (currentNode.getKeyString().equalsIgnoreCase(testOrder.getDeparture()+testOrder.getDestination())) {
+                    //System.out.println("Found! :" + testOrder.getDestination() + testOrder.getDeparture());
+                    currentNode.addOrderToOrderArrayList(testOrder);
+                    break;
+                }
 
-    synchronized void addOrderToTheCheckInSystem(Order testOrder) {
-        //System.out.println("Attempting to add " + testOrder.getDestination() + testOrder.getDeparture());
-        for(listNodeOrderHolder currentNode: myMap) {
-            if (currentNode.getKeyString().equalsIgnoreCase(testOrder.getDeparture() + testOrder.getDestination())) {
-                //Help print to see orders are properly added
-                System.out.println("Found added! :" + testOrder.getDestination() + testOrder.getDeparture());
-                currentNode.addOrderToOrderArrayList(testOrder);
-                break;
             }
-
         }
-    }
+
 
     /**
      * This method is used to remove an Order from the checkInSystem.
@@ -104,13 +105,13 @@ public class CheckInSystem {
      *
      * @param testOrder Order that's added to the system
      */
-
-    synchronized void removeOrderFromTheCheckInSystem(Order testOrder) {
-        //Help print to see orders are properly removed
-        //System.out.println("Attempting to remove " + testOrder.getDeparture() + testOrder.getDestination());
-        for(listNodeOrderHolder currentNode: myMap) {
+    synchronized public void removeOrderFromTheCheckInSystem(Order testOrder) {
+        Iterator<listNodeOrderHolder> testIterator = myMap.iterator();
+        System.out.println("Attempting to remove " + testOrder.getDeparture() + testOrder.getDestination());
+        while (testIterator.hasNext()) {
+            listNodeOrderHolder currentNode = testIterator.next();
             if (currentNode.getKeyString().equalsIgnoreCase(testOrder.getDeparture() + testOrder.getDestination())) {
-                System.out.println("Found removed! :" + testOrder.getDeparture() + testOrder.getDestination());
+                                System.out.println("Found! :" + testOrder.getDeparture() + testOrder.getDestination());
                 currentNode.removeOrderFromOrderArrayList(testOrder);
                 break;
             }
