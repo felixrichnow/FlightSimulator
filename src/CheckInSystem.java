@@ -82,7 +82,7 @@ public class CheckInSystem {
      *
      * @param testOrder Order that's added to the system
      */
-    private synchronized void addOrderToTheCheckInSystem(Order testOrder) {
+    synchronized void addOrderToTheCheckInSystem(Order testOrder) {
             Iterator<listNodeOrderHolder> testIterator = myMap.iterator();
             //System.out.println("Attempting to add " + testOrder.getDestination() + testOrder.getDeparture());
             while (testIterator.hasNext()) {
