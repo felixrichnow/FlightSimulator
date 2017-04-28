@@ -1,6 +1,15 @@
 
 /**
- * Created by Felix Richnau on 2017-03-27.
+ * An Order contains all information necessary
+ * information for an AirPlane to be able to
+ * get and transport passengers.
+ * It has their Departure,Destination
+ * ticketClass and how many passengers they
+ * are stored in the Order.
+ *
+ * @author Felix Richnau
+ * @version 1.0
+ * @since 2017-04-27
  */
 public class Order {
     private int passengers; // 1-5 passengers per order
@@ -15,19 +24,39 @@ public class Order {
         this.ticketClass=ticketClass;
     }
 
+    /**
+     * Method getPassengers
+     * This method is used to get access to the Orders passengers.
+     * @return passengers the Orders passengers(int)
+     */
     public int getPassengers() {
         return passengers;
     }
 
-    public int getTicketClass() {
+    /**
+     * Method getTicketClass
+     * This method is used to get access to the Orders ticket class.
+     * @return ticketClass the Orders ticket class(int)
+     */
+    int getTicketClass() {
         return ticketClass;
     }
 
-    public String getDeparture() {
+    /**
+     * Method getDeparture
+     * This method is used to get access to the Orders departure.
+     * @return departure the Orders departure city (String)
+     */
+    String getDeparture() {
         return departure;
     }
 
-    public String getDestination() {
+    /**
+     * Method getDestination
+     * This method is used to get access to the Orders destination.
+     * @return destination the Orders destination city (String)
+     */
+    String getDestination() {
         return destination;
     }
 

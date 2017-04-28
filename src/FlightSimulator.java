@@ -2,15 +2,25 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
+
 /**
- * Created by user on 2017-03-27.
+ * The FlightSimulator creates and runs
+ * the Order Generators and the Airplanes.
+ * It creates random starting locations for the Airplanes.
+ *
+ * @author Felix Richnau
+ * @version 1.0
+ * @since 2017-04-27
  */
-
-
 public class FlightSimulator {
 
-
-    public void SimulateFlight(){
+    /**
+     * This method is used to simulate Flight happening.
+     * It creates 3 Ordergenerators and starts them.
+     * Then it creates 5 Airplanes and gives them random starting locations.
+     * Then it starts them too.
+     */
+    void SimulateFlight(){
         final Object lock = new Object();
         CheckInSystem testCheckInSystem = new CheckInSystem();
         Random randomGenerator = new Random();
@@ -26,24 +36,5 @@ public class FlightSimulator {
             Thread currentAirPlane = new Thread(new Airplane(testCheckInSystem,lock,startLoc));
             currentAirPlane.start();
         }
-//        Airplane testAirPlane = new Airplane(testCheckInSystem,lock,"London");
-//        Thread thread3 = new Thread(testAirPlane);
-//        thread3.start();
-//
-//        Airplane testAirPlane2 = new Airplane(testCheckInSystem,lock,"Stockholm");
-//        Thread thread4 = new Thread(testAirPlane2);
-//        thread4.start();
-//
-//        Airplane testAirPlane3 = new Airplane(testCheckInSystem,lock,"Berlin");
-//        Thread thread5 = new Thread(testAirPlane3);
-//        thread5.start();
-//
-//        Airplane testAirPlane4 = new Airplane(testCheckInSystem,lock,"Paris");
-//        Thread thread6 = new Thread(testAirPlane4);
-//        thread6.start();
-//
-//        Airplane testAirPlane5 = new Airplane(testCheckInSystem,lock,"Rome");
-//        Thread thread7 = new Thread(testAirPlane5);
-//        thread7.start();
     }
 }
